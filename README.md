@@ -8,6 +8,13 @@ Compiler 32-bit with WSL: `gcc -m32 input.c -o output`
 - sudo apt install gcc
 - sudo apt-get install build-essential libc6-dev-i386
 
+Install WSL for all User in Windows:
+Open PowerShell as admin
+- check distro: `wsl --list --online`
+- mov distro to User: `wsl --set-default <Distro>`
+- run distro: wsl
+Install WSL in User
+
 Compiler 64-bit with WSl: `gcc input.c -o ouput`
 
 Compiler when use socket: `gcc bind-shell.c -o bind-shell -lws2_32`
