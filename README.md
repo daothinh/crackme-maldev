@@ -61,3 +61,17 @@ Gộp private key và chứng chỉ thành file .pem duy nhất:
 OpenSSL
 
   `openssl s_server -accept 443 -cert server.pem`
+
+# Shared Folder VMware
+
+Modify file
+    `sudo nano /etc/ftfs`
+
+In last line add string
+    vmhgfs-fuse    /mnt/hgfs    fuse    defaults,allow_other    0    0
+
+Create folder
+    `mkdir /mnt/hgfs`
+
+Mount file
+    `mount -a `
