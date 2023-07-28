@@ -69,16 +69,22 @@ OpenSSL
 
   `openssl s_server -accept 443 -cert server.pem`
 
-# Shared Folder VMware
+### Reverse shell with Metasploit 
 
-Modify file
-    `sudo nano /etc/ftfs`
+# Config Network Meta
+  auto eth0
+  iface eth0 inet dhcp
 
-In last line add string
-    vmhgfs-fuse    /mnt/hgfs    fuse    defaults,allow_other    0    0
+  auto eth1
+  iface eth1 inet static
+        address 192.168.1.68
+        netmask 255.255.255.0
+# Config Network Meta
+  auto eth0
+  iface eth0 inet dhcp
 
-Create folder
-    `mkdir /mnt/hgfs`
+  auto eth1
+  iface eth1 inet static
+        address 192.168.1.68
+        netmask 255.255.255.0
 
-Mount file
-    `mount -a `
