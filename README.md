@@ -88,3 +88,15 @@ OpenSSL
         address 192.168.1.68
         netmask 255.255.255.0
 
+# Cannot bind ResultServer on port 2042 because it was in use, bailing
+
+Check process use port 2042
+  `netstat -putata | grep 2042`
+
+Stop port
+  `sudo fuser -n tcp -k 2042`
+
+# Connect KVM
+  `virsh`
+  `connect qemu:///system`
+  `list --all`
