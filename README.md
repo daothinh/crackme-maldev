@@ -79,24 +79,15 @@ OpenSSL
   iface eth1 inet static
         address 192.168.1.68
         netmask 255.255.255.0
-# Config Network Meta
-  auto eth0
-  iface eth0 inet dhcp
 
-  auto eth1
-  iface eth1 inet static
-        address 192.168.1.68
-        netmask 255.255.255.0
+# Shared Folder in VMWare
+Modify 
+  `sudo nano /etc/fstab`
+Add String to Last file
+  `vmhgfs-fuse    /mnt/hgfs    fuse    defaults,allow_other    0    0`
+Create file
+  `mkdir /mnt/hgfs`
+Mount
+  `mount -a`
 
-# Cannot bind ResultServer on port 2042 because it was in use, bailing
 
-Check process use port 2042
-  `netstat -putata | grep 2042`
-
-Stop port
-  `sudo fuser -n tcp -k 2042`
-
-# Connect KVM
-  `virsh`
-  `connect qemu:///system`
-  `list --all`
