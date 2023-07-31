@@ -90,4 +90,11 @@ Create file
 Mount
   `mount -a`
 
+# Fix Yara Decompile
+  `sudo -u cape poetry run extra/poetry_yara_installer.sh`
 
+# Disable port 2042
+Check service use port
+  `netstat -putana | grep 2042`
+Kill it
+  `sudo fuser -n tcp -k 2042`
