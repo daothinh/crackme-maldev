@@ -98,3 +98,6 @@ Check service use port
   `netstat -putana | grep 2042`
 Kill it
   `sudo fuser -n tcp -k 2042`
+
+# Restart all service
+  `systemctl daemon-reload`
