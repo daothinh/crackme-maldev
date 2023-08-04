@@ -101,3 +101,9 @@ Kill it
 
 # Restart all service
   `systemctl daemon-reload`
+
+# Compile Yara rule
+  `sudo -u cape poetry run extra/poetry_yara_installer.sh`
+
+# Cape-installer Refer
+  `https://github.com/rebaker501/capev2install`
