@@ -72,7 +72,7 @@ Append private key và Cer to only file <.pem> :
 
 OpenSSL
 
-`openssl s_server -accept 443 -cert server.pem`
+`openssl s_server -accept <port> -cert server.pem`
 
 ## Config Network Kali Linux
 
@@ -112,5 +112,29 @@ sudo fuser -n tcp -k 2042
 ```
 
 Restart all service: `systemctl daemon-reload`
+
+## Config SSH Authentication
+
+VM Client, create SSH Key
+
+- `ssh-keygen -t rsa -b 4096`
+
+Copy & paste SSH Key to Server (Maybe request password)
+
+- `cat ~/.ssh/id_rsa.pub | ssh username@server "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >>  ~/.ssh/authorized_keys"`
+
+In Server, Pemission SSH Key
+
+- `chmod 600 ~/.ssh/authorized_keys`
+
+In Client, Create new file config in `~./ssh`
+
+```bash
+# New config if not exist
+nano ~/.ssh/config
+#Paste to nano-editor
+Host *
+  IdentityFile ~/.ssh/id_rsa
+```
 
 ## => To be Continued
