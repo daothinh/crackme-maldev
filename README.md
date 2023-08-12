@@ -98,18 +98,18 @@ Mount: `mount -a`
 
 ## Take it Easy on Anything
 
-Fix Yara rule:
+- Fix Yara rule:
   `sudo -u cape poetry run extra/poetry_yara_installer.sh`
 
-Compile Yara rule:
+- Compile Yara rule:
   `sudo -u cape poetry run extra/poetry_yara_installer.sh`
 
-Disable port 2042
+- Disable port 2042
 
-```bash
-netstat -putana | grep 2042
-sudo fuser -n tcp -k 2042
-```
+  ```bash
+  netstat -putana | grep 2042
+  sudo fuser -n tcp -k 2042
+  ```
 
 Restart all service: `systemctl daemon-reload`
 
