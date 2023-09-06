@@ -1,0 +1,121 @@
+Lucas0001's Lizz by Lucas0001
+https://crackmes.one/crackme/64a06bac33c5d460c17f1f59
+
+# Challenge
+
+x64 Windows console application
+No apparent packing or obfuscation
+
+Prompt:
+
+```
+Welcome, brave hacker, to the ultimate CrackMe challenge!
+To prove your skills, you must crack the secret password.
+Enter the password:
+```
+
+Incorrect password entry elicits:
+
+```
+Access denied! Wrong password.
+Nice try, but you'll have to do better!
+Keep hacking and never give up!
+Thank you for participating in the CrackMe challenge!
+Your skills are truly impressive. Keep up the great work!
+```
+
+It's quite a verbose challenge.
+
+# First glances
+
+Opened in IDA to search for strings.
+
+We can trace back the responses to find failure block begins at 1400012B3:
+
+```
+.text:00000001400012B3     mov     rcx, cs:?cout@std@@3V?$basic_ostream@DU?$char_traits@D@std@@@1@A ; std::basic_ostream<char,std::char_traits<char>> std::cout
+.text:00000001400012BA     lea     rdx, aAccessDeniedWr ; "Access denied! Wrong password."
+.text:00000001400012C1     call    sub_1400014A0
+```
+
+and the success block begins at 140001264:
+
+```
+.text:0000000140001264     mov     rcx, cs:?cout@std@@3V?$basic_ostream@DU?$char_traits@D@std@@@1@A ; std::basic_ostream<char,std::char_traits<char>> std::cout
+.text:000000014000126B     lea     rdx, aAccessGrantedY ; "Access granted! You cracked it!"
+.text:0000000140001272     call    sub_1400014A0
+```
+
+The password is read into a char buffer from stdin at 140001219:
+
+```
+.text:0000000140001219     mov     rcx, cs:?cin@std@@3V?$basic_istream@DU?$char_traits@D@std@@@1@A ; std::basic_istream<char,std::char_traits<char>> std::cin
+.text:0000000140001220     lea     r8, [rsp+48h+password]
+.text:0000000140001225     call    sub_140001740
+```
+
+And a validation loop sits between them, which can exit to failure in several places.
+
+# Diving in
+
+Examining the validation loop:
+
+Setup and strlen(password):
+
+```
+.text:00007FF71382122A     lea     rcx, [rsp+48h+password]
+.text:00007FF71382122F     mov     rax, 0FFFFFFFFFFFFFFFFh
+					       
+.text:00007FF713821236     inc     rax
+.text:00007FF713821239     cmp     byte ptr [rcx+rax], 0
+.text:00007FF71382123D     jnz     short loc_7FF713821236   ; loop until null terminator found
+```
+
+Jumps to fail if strlen isn't 8:
+
+```
+.text:00007FF71382123F     cmp     eax, 8
+.text:00007FF713821242     jnz     short loc_7FF7138212B3
+```
+
+Setup for the main validation loop:
+
+```
+.text:00007FF713821244     xor     eax, eax
+.text:00007FF713821246     mov     edx, 41h ; 'A'
+```
+
+Compare password[eax] to edx ('A' the first time through the loop.)
+Jump to fail if they don't match:
+
+```
+.text:00007FF713821250     movsx   ecx, [rsp+rax+48h+password]
+.text:00007FF713821255     cmp     ecx, edx
+.text:00007FF713821257     jnz     short loc_7FF7138212B3
+```
+
+Increment the counter eax, and the comparison byte edx
+For edx, 'A' inc to 'B', etc.
+Loop around 8 times total, then fall through to the success block if we don't fail out earlier.
+
+```
+.text:00007FF713821259     inc     edx
+.text:00007FF71382125B     inc     rax
+.text:00007FF71382125E     cmp     rax, 8
+.text:00007FF713821262     jl      short loc_7FF713821250
+```
+
+The password is clearly just the 8 incremental letters "ABCDEFGH".
+
+```
+Welcome, brave hacker, to the ultimate CrackMe challenge!
+To prove your skills, you must crack the secret password.
+Enter the password: ABCDEFGH
+Access granted! You cracked it!
+Welcome to the secret hacker's club!
+Prepare yourself for more challenges!
+Thank you for participating in the CrackMe challenge!
+Your skills are truly impressive. Keep up the great work!
+```
+
+QED

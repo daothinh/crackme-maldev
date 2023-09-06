@@ -137,4 +137,29 @@ Host *
   IdentityFile ~/.ssh/id_rsa
 ```
 
+## Config SSH Tunnel
+
+```bash
+# Typing
+```
+
+## Create venv Python
+
+```bash
+# Create venv
+python3 -m venv <name>
+
+# Active venv
+# For Windows
+<name>\Scripts\activate
+# For Linux
+source <name>/bin/activate
+
+# Install package
+pip install -r requirements.txt
+
+# Deactive venv
+deactivate
+```
+
 ## => To be Continued
